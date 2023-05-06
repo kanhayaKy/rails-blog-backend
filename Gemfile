@@ -52,3 +52,5 @@ gem "bcrypt", "~> 3.1"
 gem "jwt", "~> 2.7"
 
 gem "active_model_serializers", "~> 0.10.13"
+
+gem "rack-cors", "~> 2.0"

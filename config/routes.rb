@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         resources :comments, only: [:create, :update, :destroy]
       end
       post '/auth/login', to: 'authentication#login'
+      get '/auth/user', to: 'authentication#user_details'
     end
   end
 end
