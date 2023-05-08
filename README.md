@@ -1,24 +1,22 @@
-# README
+# PRE-REQUISITES
+- Ruby 3
+- Rails 7
+- Postgres Database
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Starting the project
+- Create the database using : `rails db:create`
+- Run the migration files   : `rails db:migrate`
+- Start the rails server    : `rails serve`
 
-Things you may want to cover:
 
-* Ruby version
+# Features
+ - [x] User Creation and Authentication
+ - [x] Post Create, Update, Read and Destroy
+ - [x] Like and Dislike posts
+ - [x] Commenting on a post
+ ...
 
-* System dependencies
+# API Documentation
+...
 
-* Configuration
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
