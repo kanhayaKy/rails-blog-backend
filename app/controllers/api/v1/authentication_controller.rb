@@ -22,6 +22,10 @@ class Api::V1::AuthenticationController < ApplicationController
                   user: Api::V1::UserSerializer.new(@current_user) }, status: :ok
   end
 
+  def logout
+    render json: {}, status: :ok
+  end
+
   private
 
   def login_params

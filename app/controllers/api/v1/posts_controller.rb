@@ -1,17 +1,20 @@
 class Api::V1::PostsController < ApplicationController
-  before_action :authorize_request, only: [:create, :update, :destroy]
-  before_action :set_post, only: [:show, :update, :destroy]
+  before_action :authorize_request, except: [:index, :show]
+  before_action :authorize_request_conditionally, only: [:index, :show]
+  before_action :set_post, except: [:index, :create]
 
   def index
     @posts = Post.all
-    render json: @posts
+    render json: @posts, each_serializer: Api::V1::PostSerializer, current_user: @current_user
   end
 
   def show
-    render json: @post
+    render json: @post, serializer: Api::V1::PostSerializer, current_user: @current_user
   end
 
   def create
+    post_params.require(:title)
+
     @post = Post.new(post_params)
     if @post.save
         render json: @post, status: :created
@@ -42,6 +45,18 @@ class Api::V1::PostsController < ApplicationController
     end
   end
 
+  def like
+    if !@post.likes.include?(@current_user)
+      @post.likes << @current_user
+    end
+    render json: @post, serializer: Api::V1::PostSerializer, current_user: @current_user
+  end
+
+  def dislike
+    @post.likes.delete(@current_user)
+    render json: @post, serializer: Api::V1::PostSerializer, current_user: @current_user
+  end
+
   private
 
     def set_post
@@ -49,7 +64,7 @@ class Api::V1::PostsController < ApplicationController
     end
 
     def post_params
-      params.require(:post).permit(:description).merge(user_id: @current_user.id)
+      params.permit(:title, :content).merge(user_id: @current_user.id)
     end
 
 end
