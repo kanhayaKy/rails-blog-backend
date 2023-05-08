@@ -5,7 +5,6 @@ class ApplicationController < ActionController::API
 
 
     def authorize_request
-        puts "Authorizing Strict"
         begin
           get_user_from_headers(request.headers)
         rescue ActiveRecord::RecordNotFound => e
