@@ -13,6 +13,7 @@ class Api::V1::UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
+        @user.avatar.attach(params[:avatar]) if params[:avatar].present?
         if @user.save
             render json: @user, status: :created
         else
@@ -23,6 +24,7 @@ class Api::V1::UsersController < ApplicationController
 
 
     def update
+        @user.avatar.attach(params[:avatar]) if params[:avatar].present?
         unless @user.update(user_params)
           render json: { errors: @user.errors.full_messages },
                  status: :unprocessable_entity
