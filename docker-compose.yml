@@ -17,8 +17,11 @@ services:
     ports:
       - "3000:3000"
     environment:
+      RAILS_ENV: ${ENVIRONMENT}
       DB_HOST: ${POSTGRES_DB_HOST}
+      DB_NAME: ${POSTGRES_DB_NAME}
       DB_USER: ${POSTGRES_USER}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
     depends_on:
       - postgres

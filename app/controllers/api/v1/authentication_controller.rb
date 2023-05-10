@@ -1,5 +1,5 @@
 class Api::V1::AuthenticationController < ApplicationController
-  before_action :authorize_request, except: %i[login register]
+  before_action :authorize_request, except: [:login]
 
   # POST /auth/login
   def login
@@ -10,7 +10,7 @@ class Api::V1::AuthenticationController < ApplicationController
       render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
                      user: Api::V1::UserSerializer.new(@user) }, status: :ok
     else
-      render json: { error: 'unauthorized' }, status: :unauthorized
+      render json: { errors: ['Invalid username or password'] }, status: :unauthorized
     end
   end
 
