@@ -54,3 +54,7 @@ gem "jwt", "~> 2.7"
 gem "active_model_serializers", "~> 0.10.13"
 
 gem "rack-cors", "~> 2.0"
+
+gem 'rspec-rails'
+
+gem 'rswag'

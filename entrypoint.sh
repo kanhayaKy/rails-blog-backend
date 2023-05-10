@@ -4,9 +4,6 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /app/tmp/pids/server.pid
 
-# Create the database if it doesn't exist
-rails db:create
-
 # Run database migrations
 rails db:migrate
 
