@@ -3,7 +3,14 @@
 - Rails 7
 - Postgres Database
 
-# Starting the project
+# Starting the project using docker
+- Start the docker containers : `docker-compose -f docker-compose.yml up --build`
+- Create the database using   : `docker-compose run backend rails db:create`
+- Run the migration files     : `docker-compose run backend rails db:migrate`
+
+
+# Starting the project without docker
+- Ensure postgres is running
 - Create the database using : `rails db:create`
 - Run the migration files   : `rails db:migrate`
 - Start the rails server    : `rails serve`
