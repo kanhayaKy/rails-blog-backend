@@ -1,10 +1,20 @@
 class Api::V1::PostsController < ApplicationController
   before_action :authorize_request, except: [:index, :show]
   before_action :authorize_request_conditionally, only: [:index, :show]
+  before_action :set_user, except: [:create]
   before_action :set_post, except: [:index, :create]
 
   def index
-    @posts = Post.all
+    puts params[:user__username]
+    puts !params[:user__username]&.present?
+    if !params[:user__username]&.present?
+      @posts = Post.all
+    elsif @user
+      @posts = @user.posts
+    else
+      @posts = []
+    end
+
     render json: @posts, each_serializer: Api::V1::PostSerializer, current_user: @current_user
   end
 
@@ -32,7 +42,7 @@ class Api::V1::PostsController < ApplicationController
         render json: @post.errors, status: :unprocessable_entity
       end
     else
-      render json: { error: 'Not authorized to perform this action.' }, status: :unauthorized
+      render json: { errors: ['Not authorized to perform this action.'] }, status: :unauthorized
     end
   end
 
@@ -41,7 +51,7 @@ class Api::V1::PostsController < ApplicationController
       @post.destroy
       render json: { message: "Post deleted successfully" }
     else
-      render json: { error: "Not authorized to perform this action." }, status: :unauthorized
+      render json: { errors: ["Not authorized to perform this action."] }, status: :unauthorized
     end
   end
 
@@ -59,8 +69,22 @@ class Api::V1::PostsController < ApplicationController
 
   private
 
+    def set_user
+      @user = User.find_by_username!(params[:user__username])
+      rescue ActiveRecord::RecordNotFound
+        @user = nil
+    end
+
     def set_post
-      @post = Post.find(params[:id])
+      if @user
+        @post = @user.posts.find(params[:id])
+      else
+        raise ActiveRecord::RecordNotFound, "User not found"
+      end
+
+      rescue ActiveRecord::RecordNotFound
+        render json: { errors: ['Could not find that post'] }, status: :not_found
+
     end
 
     def post_params
