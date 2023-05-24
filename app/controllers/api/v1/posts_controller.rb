@@ -5,8 +5,6 @@ class Api::V1::PostsController < ApplicationController
   before_action :set_post, except: [:index, :create]
 
   def index
-    puts params[:user__username]
-    puts !params[:user__username]&.present?
     if !params[:user__username]&.present?
       @posts = Post.all
     elsif @user

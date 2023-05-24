@@ -17,9 +17,12 @@ Rails.application.routes.draw do
           end
           resources :comments, only: [:create, :update, :destroy]
         end
+
+        post 'follow', to: 'follows#create', as: 'follow'
+        delete 'unfollow', to: 'follows#destroy', as: 'unfollow'
       end
 
-      resources :posts, only: [:index]
+      resources :posts, only: [:index, :create]
 
       post '/auth/login', to: 'authentication#login'
       get '/auth/user', to: 'authentication#user_details'
